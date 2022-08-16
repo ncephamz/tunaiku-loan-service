@@ -8,6 +8,8 @@ import (
 	"github.com/ncephamz/tunaiku-loan-service/src/domain/loan"
 
 	"github.com/gorilla/mux"
+
+	"github.com/ncephamz/tunaiku-loan-service/src/infrastructure/responses"
 )
 
 type ListLoanByKtpHandler struct {
@@ -25,13 +27,13 @@ func (h *ListLoanByKtpHandler) ServeHTTP(w http.ResponseWriter, r *http.Request)
 
 	response, err := h.repository.FindAllByKtp(ktp)
 	if err != nil {
-		fmt.Fprintf(w, string(err.Error()))
+		responses.ERROR(w, http.StatusInternalServerError, err)
 		return
 	}
 
 	res, err := json.Marshal(response)
 	if err != nil {
-		fmt.Fprintf(w, string(err.Error()))
+		responses.ERROR(w, http.StatusInternalServerError, err)
 		return
 	}
 

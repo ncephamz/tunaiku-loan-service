@@ -7,6 +7,7 @@ import (
 
 	"github.com/ncephamz/tunaiku-loan-service/src/domain/loan"
 	model "github.com/ncephamz/tunaiku-loan-service/src/domain/loan"
+	"github.com/ncephamz/tunaiku-loan-service/src/infrastructure/responses"
 )
 
 type CreateLoanHandler struct {
@@ -24,25 +25,25 @@ func (h *CreateLoanHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	err := json.NewDecoder(r.Body).Decode(&loan)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		responses.ERROR(w, http.StatusBadRequest, err)
 		return
 	}
 
 	err = loan.Validate()
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		responses.ERROR(w, http.StatusBadRequest, err)
 		return
 	}
 
 	response, err := h.repository.CreateLoan(&loan)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		responses.ERROR(w, http.StatusInternalServerError, err)
 		return
 	}
 
 	res, err := json.Marshal(response)
 	if err != nil {
-		fmt.Fprintf(w, string(err.Error()))
+		responses.ERROR(w, http.StatusInternalServerError, err)
 		return
 	}
 

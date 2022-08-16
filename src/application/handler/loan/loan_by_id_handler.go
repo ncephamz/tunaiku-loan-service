@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/ncephamz/tunaiku-loan-service/src/domain/loan"
+	"github.com/ncephamz/tunaiku-loan-service/src/infrastructure/responses"
 
 	"github.com/gorilla/mux"
 )
@@ -25,13 +26,13 @@ func (h *LoanByIdHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	response, err := h.repository.FindLoanById(id)
 	if err != nil {
-		fmt.Fprintf(w, string(err.Error()))
+		responses.ERROR(w, http.StatusInternalServerError, err)
 		return
 	}
 
 	res, err := json.Marshal(response)
 	if err != nil {
-		fmt.Fprintf(w, string(err.Error()))
+		responses.ERROR(w, http.StatusInternalServerError, err)
 		return
 	}
 
