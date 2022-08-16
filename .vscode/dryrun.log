@@ -1,0 +1,6 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory `/Users/ncephamz/Desktop/Learn/Tunaiku/Test/tunaiku-loan-service'
+make: Leaving directory `/Users/ncephamz/Desktop/Learn/Tunaiku/Test/tunaiku-loan-service'
+ 
+make: *** No targets.  Stop.
+
